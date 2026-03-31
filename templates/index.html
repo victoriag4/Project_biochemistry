@@ -1,0 +1,71 @@
+{% extends "base_page.html" %}
+
+{% block page-title %}
+Биохимия: карточки для запоминания
+{% endblock %}
+
+{% block page-lead %}
+Сайт помогает учить термины по биохимии: карточки с иллюстрациями (ссылка на картинку хранится в текстовом файле) и форма, чтобы дописывать свои термины.
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5" id="project-contents">
+    <h2 class="pb-2 border-bottom">Что есть в этом проекте</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-md-2 row-cols-xl-4">
+        <div class="col d-flex">
+            <div class="icon-square text-bg-light d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em">
+                    <use xlink:href="#cpu-fill"></use>
+                </svg>
+            </div>
+            <div>
+                <h3 class="fs-2">Карточки</h3>
+                <p>Режим запоминания: на одной стороне термин, на другой — определение и картинка. Данные читаются из CSV-файла в папке <code>data</code>.</p>
+                <a href="{% url 'flashcards' %}" class="btn btn-primary">Открыть карточки</a>
+            </div>
+        </div>
+        <div class="col d-flex">
+            <div class="icon-square text-bg-light d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em">
+                    <use xlink:href="#cpu-fill"></use>
+                </svg>
+            </div>
+            <div>
+                <h3 class="fs-2">Список (таблица)</h3>
+                <p>Все термины в виде таблицы: удобно просматривать и копировать.</p>
+                <a href="{% url 'terms_list' %}" class="btn btn-outline-primary">Таблица</a>
+            </div>
+        </div>
+        <div class="col d-flex">
+            <div class="icon-square text-bg-light d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em">
+                    <use xlink:href="#cpu-fill"></use>
+                </svg>
+            </div>
+            <div>
+                <h3 class="fs-2">Добавить и править</h3>
+                <p>Две формы с проверкой полей: <strong>добавление</strong> новой карточки и <strong>редактирование</strong> существующей по названию термина. Данные — в CSV.</p>
+                <a href="{% url 'add_term' %}" class="btn btn-primary">Добавить</a>
+                <a href="{% url 'edit_term' %}" class="btn btn-outline-secondary">Редактировать</a>
+            </div>
+        </div>
+        <div class="col d-flex">
+            <div class="icon-square text-bg-light d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em">
+                    <use xlink:href="#cpu-fill"></use>
+                </svg>
+            </div>
+            <div>
+                <h3 class="fs-2">Статистика</h3>
+                <p>Сколько терминов уже есть? Какой они длины?</p>
+                <a href="{% url 'stats' %}" class="btn btn-primary">
+                    Изучить
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}

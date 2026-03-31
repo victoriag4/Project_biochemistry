@@ -1,0 +1,32 @@
+{% extends "base_page.html" %}
+
+{% block page-title %}
+{{ term }}
+{% endblock %}
+
+{% block page-lead %}
+Карточка № {{ term_id }} из файла <code>data/terms.csv</code>.
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5" id="term-detail">
+    <p class="mb-3">
+        <a href="{% url 'terms_list' %}" class="btn btn-outline-secondary btn-sm">← К списку</a>
+        <a href="{% url 'flashcards' %}" class="btn btn-outline-primary btn-sm">Режим карточек</a>
+        <a href="{% url 'edit_term' %}?term={{ term|urlencode }}" class="btn btn-primary btn-sm">Редактировать</a>
+    </p>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="h4 card-title">{{ term }}</h2>
+            <p class="card-text">{{ definition }}</p>
+            {% if image %}
+            <figure class="mb-0">
+                <img src="{{ image }}" class="img-fluid rounded border" alt="Иллюстрация: {{ term }}" loading="lazy" referrerpolicy="no-referrer" style="max-height: 360px; object-fit: contain;">
+            </figure>
+            {% else %}
+            <p class="text-muted mb-0">Для этой карточки ссылка на изображение не задана.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

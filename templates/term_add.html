@@ -1,0 +1,67 @@
+{% extends "base_page.html" %}
+
+{% block page-title %}
+Добавить карточку
+{% endblock %}
+
+{% block page-lead %}
+Данные проверяются на сервере: при ошибках под полями появятся понятные сообщения. После успешной отправки карточка дописывается в <code>data/terms.csv</code>.
+{% endblock %}
+
+{% block content %}
+<div class="container-sm px-5 py-5" id="term-form">
+    <form method="post" action="{% url 'add_term' %}" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div class="row px-5 py-2">
+            <h3>Контакты</h3>
+        </div>
+        <div class="row px-5 py-2">
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                {{ form.name }}
+                {% if form.name.errors %}<div class="text-danger small mt-1">{{ form.name.errors }}</div>{% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                {{ form.email }}
+                {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="row px-5 py-2">
+            <h3>Карточка</h3>
+        </div>
+        <div class="row px-5 py-2">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="{{ form.term.id_for_label }}">{{ form.term.label }}</label>
+                {{ form.term }}
+                {% if form.term.errors %}<div class="text-danger small mt-1">{{ form.term.errors }}</div>{% endif %}
+            </div>
+            <div class="col-md-8 mb-3">
+                <label class="form-label" for="{{ form.definition.id_for_label }}">{{ form.definition.label }}</label>
+                {{ form.definition }}
+                <div id="definition_note" class="form-text">Минимум 10 символов. Символ «;» в тексте нельзя — он служебный для CSV.</div>
+                {% if form.definition.errors %}<div class="text-danger small mt-1">{{ form.definition.errors }}</div>{% endif %}
+            </div>
+        </div>
+        <div class="row px-5 py-2">
+            <div class="col-12 mb-3">
+                <label class="form-label" for="{{ form.image.id_for_label }}">{{ form.image.label }}</label>
+                {{ form.image }}
+                {% if form.image.errors %}<div class="text-danger small mt-1">{{ form.image.errors }}</div>{% endif %}
+            </div>
+        </div>
+        <div class="row px-5 py-2">
+            <button type="submit" class="btn btn-primary">Сохранить карточку</button>
+            <a href="{% url 'terms_list' %}" class="btn btn-link">К списку</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
