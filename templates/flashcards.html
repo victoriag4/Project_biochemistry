@@ -1,0 +1,71 @@
+{% extends "base_page.html" %}
+
+{% block page-title %}
+Карточки для запоминания
+{% endblock %}
+
+{% block page-lead %}
+Нажмите на карточку, чтобы перевернуть её: на лицевой стороне термин, на обратной — пояснение и иллюстрация (если указана ссылка).
+{% endblock %}
+
+{% block content %}
+<style>
+    .flashcard-grid { row-gap: 1.5rem; }
+    .flashcard-wrap { perspective: 1000px; height: 280px; cursor: pointer; }
+    .flashcard-wrap:focus { outline: 2px solid #0d6efd; outline-offset: 4px; }
+    .flashcard-inner {
+        position: relative; width: 100%; height: 100%;
+        transition: transform 0.55s ease; transform-style: preserve-3d; border-radius: 0.75rem;
+        box-shadow: 0 0.35rem 1rem rgba(0,0,0,.12);
+    }
+    .flashcard-wrap.is-flipped .flashcard-inner { transform: rotateY(180deg); }
+    .flashcard-face {
+        position: absolute; inset: 0;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 0.75rem; border: 1px solid rgba(0,0,0,.08);
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        padding: 1.25rem; background: #fff; text-align: center;
+    }
+    .flashcard-back { transform: rotateY(180deg); overflow: auto; align-items: stretch; }
+    .flashcard-term { font-size: 1.35rem; font-weight: 600; }
+    .flashcard-def { font-size: 0.95rem; color: #333; margin-top: 0.75rem; text-align: left; }
+    .flashcard-img { max-height: 120px; width: auto; max-width: 100%; object-fit: contain; margin-top: 0.75rem; border-radius: 0.35rem; }
+    .flashcard-hint { font-size: 0.8rem; color: #6c757d; margin-top: 0.5rem; }
+</style>
+<div class="container px-4 py-3" id="flashcards">
+    <div class="d-flex flex-wrap gap-2 pb-3">
+        <a href="{% url 'terms_list' %}" class="btn btn-outline-secondary btn-sm">Таблица терминов</a>
+        <a href="{% url 'add_term' %}" class="btn btn-outline-primary btn-sm">Добавить</a>
+        <a href="{% url 'edit_term' %}" class="btn btn-outline-secondary btn-sm">Редактировать</a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 flashcard-grid">
+        {% for cnt, term, definition, image in terms %}
+        <div class="col">
+            <div class="flashcard-wrap" tabindex="0" role="button" aria-label="Карточка {{ term }}"
+                 onclick="this.classList.toggle('is-flipped')"
+                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.classList.toggle('is-flipped')}">
+                <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">
+                        <span class="text-muted small">#{{ cnt }}</span>
+                        <div class="flashcard-term">{{ term }}</div>
+                        <div class="flashcard-hint">Нажмите, чтобы открыть определение</div>
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <div class="fw-semibold">{{ term }}</div>
+                        <div class="flashcard-def">{{ definition }}</div>
+                        {% if image %}
+                        <img class="flashcard-img mx-auto d-block" src="{{ image }}" alt="Иллюстрация к термину «{{ term }}»" loading="lazy" referrerpolicy="no-referrer">
+                        {% else %}
+                        <p class="text-muted small mb-0 mt-2">Картинка не указана — можно добавить ссылку в форме.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">Пока нет терминов в файле данных.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
